@@ -1,0 +1,11 @@
+Package: indemnity
+Title: NHA MBS indemnity yield.
+Description: Calculate the NHA MBS indemnity yield.
+Version: 0.1
+License: MIT
+Author: Vathy M. Kamulete <vathymut@gmail.com>
+Maintainer: Vathy M. Kamulete <vathymut@gmail.com>
+Imports: data.table,
+    lubridate,
+    stringr,
+    devtools

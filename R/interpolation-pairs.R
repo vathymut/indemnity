@@ -1,0 +1,64 @@
+#' Get interpolation pairs for the yields, maturity dates and tenors.
+#'
+#' @param retrieval_date Retrieval (anchor) date.
+#' @param maturity_dt \code{Datatable} of maturity of each (CAD curve) tenor.
+#' @param yields_dt \code{Datatable} of yield of each (CAD curve) tenor.
+#' @param wal_date Weighted average life as a date.
+#'
+#' @return yields Yields of short and long tenor to interpolate between.
+#'
+#' @examples
+#' retrieval_date <- lubridate::ymd( "2013-03-01" )
+#' wal_date <- lubridate::ymd( "2014-06-21" )
+#' data( bloomberg_goc, package = "blpxl" )
+#' data( bloomberg_cad_maturity, package = "blpxl" ) 
+#' list_args_pt1 <- list( wal_date = wal_date, retrieval_date = retrieval_date )
+#' list_args_pt2 <- list( maturity_dt = bloomberg_cad_maturity, yields_dt = bloomberg_goc )
+#' do.call( interpolation_pairs, args = c( list_args_pt1, list_args_pt2 ) )
+#'
+interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_dt ){
+  
+  # Get maturities on reporting date
+  maturities_subset <- ycurve_for_interpolation( retrieval_date, ycurve_dt = maturity_dt )
+  maturities_with_nas <- sapply( maturities_subset, format, format = "%Y-%m-%d" )
+  maturities_selected_index <- unname( !is.na( maturities_with_nas ) )
+  maturities <- maturities_with_nas[ maturities_selected_index ]
+  maturities <- lubridate::ymd( maturities )
+
+  # Get yields on reporting date
+  yields_subset <- ycurve_for_interpolation( retrieval_date, ycurve_dt = yields_dt )
+  yields_with_nas <- unlist( yields_subset, use.names = FALSE )
+  yields_selected_index <- unname( !is.na( yields_with_nas ) )
+  yields <- yields_with_nas[ yields_selected_index ]
+
+  # Get indices of yields to interpolate
+  stopifnot( length( maturities) == length( yields) ) # Sanity check
+  short_index <- findInterval( wal_date, maturities )
+  long_index <- short_index + 1L
+
+  # Get the yields for GoC short and long bond (bill)
+  yield_short <- yields[short_index]
+  yield_long <- yields[long_index]
+
+  # Get the dates for GoC short and long maturity
+  date_short <- maturities[short_index]
+  date_long <- maturities[long_index]
+
+  # Get column names
+  maturities_colnames <- names( maturities_subset )
+  yields_colnames <- names( yields_subset )
+  
+  # Sanity check
+  stopifnot( length( setdiff( maturities_colnames, yields_colnames) ) == 0L,
+             identical( maturities_selected_index, yields_selected_index ) )
+  
+  # Get tenors
+  tenor_short <- maturities_colnames[maturities_selected_index][ short_index ]
+  tenor_long <- maturities_colnames[maturities_selected_index][ long_index ]
+
+  # Return list
+  yields_list <- list( "short" = yield_short, "long" = yield_long )
+  dates_list <- list( "short" = date_short, "long" = date_long )
+  tenor_list <- list( "short" = tenor_short, "long" = tenor_long )
+  return( list( yields = yields_list, dates = dates_list, tenors = tenor_list ) )
+}
