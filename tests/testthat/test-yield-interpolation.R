@@ -1,8 +1,7 @@
 library( indemnity )
 context( "Yield Interpolation" )
 
-#### General yield curves data ####
-# Download yields_dt here
+#### Get yield curves data ####
 userlib_path <- "T:/Landmark/mbs-pricing"
 .libPaths( c( .libPaths(), userlib_path ) )
 data( "yields_bofc", package = "bondyields" )
