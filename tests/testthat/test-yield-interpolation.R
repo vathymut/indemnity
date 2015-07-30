@@ -3,6 +3,7 @@ context( "Yield Interpolation" )
 
 #### Get yield curves data ####
 userlib_path <- "T:/Landmark/mbs-pricing"
+stopifnot( dir.exists( userlib_path ) )
 .libPaths( c( .libPaths(), userlib_path ) )
 data( "yields_bofc", package = "bondyields" )
 
