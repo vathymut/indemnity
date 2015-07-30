@@ -3,7 +3,8 @@
 #' @param issue_date Issue date.
 #' @param settlement_date Settlement date.
 #' @param maturity_date Maturity date.
-#' @param yields_dt \code{Datatable} of historical yield curves.
+#' @param yields_dt \code{Datatable} of yield of each (CAD curve) tenor.
+#' @param maturity_dt \code{Datatable} of maturity of each (CAD curve) tenor.
 #' @param wal Weighted average life of security (NHA MBS pool).
 #' @param cmch_audit Default is \code{TRUE} to include changes from CMHC audit.
 #'
@@ -17,6 +18,7 @@
 #' maturity_date <- lubridate::ymd( "2017-09-01" )
 #' data( bloomberg_goc, package = "blpxl" )
 #' data( bloomberg_cad_maturity, package = "blpxl" ) 
+#' wal <- 3.812
 #' interpolate_bey( issue_date, settlement_date, wal, yields_dt = bloomberg_goc, maturity_dt = bloomberg_cad_maturity )
 #' 
 interpolate_bey <- function( 
