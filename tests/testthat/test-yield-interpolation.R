@@ -75,13 +75,12 @@ test_that(
 test_that(
   "interpolate_bey", {
 
-    expect_equal( interpolate_bey( issue_date = ymd( "2012-12-01" ), 
+    expect_equal( interpolate_bey( retrieval_date = lubridate::ymd( "2013-01-29" ), 
                                    settlement_date  = ymd( "2013-01-31" ),
                                    maturity_date = ymd( "2017-09-01" ),
                                    maturity_dt = bloomberg_cad_maturity,
                                    yields_dt = bloomberg_goc,
-                                   wal = 3.812,
-                                   cmhc_audit = FALSE ),
+                                   wal = 3.812 ),
                   expected = 1.416,
                   tolerance = 1e-6 )
 
