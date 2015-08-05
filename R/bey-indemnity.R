@@ -11,6 +11,7 @@
 #'
 #' @return bey_interpolated Interpolated yield for indemnity calculation.
 #'
+#' @export
 #'
 #' @examples
 #' bey_short <- 1.363
