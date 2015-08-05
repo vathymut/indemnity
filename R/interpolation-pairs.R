@@ -30,9 +30,18 @@ interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_d
   yields_with_nas <- unlist( yields_subset, use.names = FALSE )
   yields_selected_index <- unname( !is.na( yields_with_nas ) )
   yields <- yields_with_nas[ yields_selected_index ]
+  
+  #### Adjust indices to ensure non-NA matches for yields ####
+  is_OK <- identical( maturities_selected_index, yields_selected_index )
+  if( !is_OK ){
+    msg_template <- "On %s, there are missing yields and/or maturity dates."
+    msg_warning <- sprintf( msg_template, format( retrieval_date, "%Y-%m-%d" ) )
+    warning( msg_warning )
+    maturities <- maturities_with_nas[ yields_selected_index ]
+    maturities <- lubridate::ymd( maturities )
+  }
 
   # Get indices of yields to interpolate
-  stopifnot( length( maturities) == length( yields) ) # Sanity check
   short_index <- findInterval( wal_date, maturities )
   long_index <- short_index + 1L
 
@@ -49,8 +58,7 @@ interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_d
   yields_colnames <- names( yields_subset )
   
   # Sanity check
-  stopifnot( length( setdiff( maturities_colnames, yields_colnames) ) == 0L,
-             identical( maturities_selected_index, yields_selected_index ) )
+  stopifnot( length( setdiff(maturities_colnames, yields_colnames) ) == 0L )
   
   # Get tenors
   tenor_short <- maturities_colnames[maturities_selected_index][ short_index ]
