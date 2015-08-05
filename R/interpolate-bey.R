@@ -1,10 +1,13 @@
 #' Find the interpolated bond equivalent yield for indemnity calculation.
 #'
-#' @param issue_date Issue date.
+#' Link for more details is here: 
+#' \url{https://www.cmhc-schl.gc.ca/en/hoficlincl/mobase/upload/nha_mbs_indemnity_calculation_methodology.pdf}
+#'
+#' @param retrieval_date Date on which the yield curve is interpolated.
 #' @param settlement_date Settlement date.
 #' @param maturity_date Maturity date.
-#' @param yields_dt \code{Datatable} of yield of each (CAD curve) tenor.
-#' @param maturity_dt \code{Datatable} of maturity of each (CAD curve) tenor.
+#' @param yields_dt \code{Data.table} of yield of each (CAD curve) tenor.
+#' @param maturity_dt \code{Data.table} of maturity of each (CAD curve) tenor.
 #' @param wal Weighted average life of security (NHA MBS pool).
 #' @param cmch_audit Default is \code{TRUE} to include changes from CMHC audit.
 #'
@@ -13,30 +16,24 @@
 #' @export
 #'
 #' @examples
-#' issue_date <- lubridate::ymd( "2012-12-01" )
+#' retrieval_date <- lubridate::ymd( "2013-01-29" )
 #' settlement_date <- lubridate::ymd( "2013-01-31" )
 #' maturity_date <- lubridate::ymd( "2017-09-01" )
 #' data( bloomberg_goc, package = "blpxl" )
 #' data( bloomberg_cad_maturity, package = "blpxl" ) 
 #' wal <- 3.812
-#' interpolate_bey( issue_date, settlement_date, wal, yields_dt = bloomberg_goc, maturity_dt = bloomberg_cad_maturity )
+#' interpolate_bey( retrieval_date, settlement_date, maturity_date, yields_dt = bloomberg_goc, maturity_dt = bloomberg_cad_maturity, wal )
 #' 
 interpolate_bey <- function( 
-  issue_date, 
+  retrieval_date, 
   settlement_date, 
   maturity_date, 
   maturity_dt, 
   yields_dt, 
-  wal,
-  cmhc_audit = TRUE ){
-  
-  # Get the retrieval date
-  retrieval_date <- ycurve_retrieval_date( issue_date, 
-                                           settlement_date, 
-                                           cmhc_audit = cmhc_audit )
+  wal ){
 
   # Get the WAL as a date
-  wal_date <- wal_to_date( settlement_date, wal )
+  wal_date <- wal_to_date( start_date = settlement_date, wal = wal )
   
   # Get the yields for GoC short and long bond (bill)
   results_list <- interpolation_pairs( 
@@ -64,6 +61,10 @@ interpolate_bey <- function(
 
   # Calculate the interpolated GoC yield
   bey_interpolated <- bey_indemnity( 
-    bey_short, bey_long, date_short, date_long, wal_date )
+    bey_short = bey_short, 
+    bey_long = bey_long, 
+    date_short = date_short, 
+    date_long = date_long, 
+    date_wal = wal_date )
   return( bey_interpolated )
 }
