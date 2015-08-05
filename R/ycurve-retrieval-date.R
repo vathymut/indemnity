@@ -6,29 +6,33 @@
 #'
 #' @return retrieval_date Date on which the yield curve is interpolated.
 #'
+#' @export
+#'
 #' @examples
 #' issue_date <- lubridate::ymd( "2015-01-30" )
 #' settlement_date <- lubridate::ymd( "2015-01-30" )
 #' ycurve_retrieval_date( issue_date, settlement_date )
 #'
-ycurve_retrieval_date <- function( issue_date, settlement_date, cmhc_audit = TRUE ){
+ycurve_retrieval_date <- function( 
+  issue_date, 
+  settlement_date, 
+  cmhc_audit = TRUE ){
+  
   # Validate input
   stopifnot( lubridate::is.POSIXct( issue_date ),
              lubridate::is.POSIXct( settlement_date ) )
   
   # Change day to first of the month
-  day_reporting <- lubridate::day( settlement_date )
-  working_date <- settlement_date
-  lubridate::day( working_date ) <- 1
+  first_of_month <- settlement_date
+  lubridate::day( first_of_month ) <- 1
+  if( lubridate::day( settlement_date ) > 15 )
+    lubridate::month( first_of_month ) <- lubridate::month( first_of_month ) + 1L
   
   # Get end of month
-  first_of_month <- working_date
-  if( day_reporting > 15 ) first_of_month <- working_date + months( 1 )
   eom <- first_of_month - lubridate::days( 1 )
   
   # Get 7 days before end of month and keep business days
   week_before_eom <- eom - c( 0:7 ) * lubridate::days( 1 )
-  # Note: c( 2:6 ) corresponds to Monday through Friday
   is_weekday <- lubridate::wday( week_before_eom ) %in% c( 2:6 )
   business_days_before <- week_before_eom[ is_weekday ]
 
@@ -37,9 +41,9 @@ ycurve_retrieval_date <- function( issue_date, settlement_date, cmhc_audit = TRU
   is_weekday <- lubridate::wday( week_after_first ) %in% c( 2:6 )
   business_days_after <- week_after_first[ is_weekday ]
   
-  # Get the third last business day of the month
+  # Get the last and the first three business days of the month
   last_three <- head( business_days_before, 3 )
-  next_three <- head( business_days_after, 3 )
+  first_three <- head( business_days_after, 3 )
   
   # Choose either third last or last business day based on issue date
   REGULATORY_DATE_CHANGE <- lubridate::ymd( "2014-11-01" )
@@ -50,7 +54,7 @@ ycurve_retrieval_date <- function( issue_date, settlement_date, cmhc_audit = TRU
   }else{
     # Changed after CMHC audit on on 06/11/2015: See Outlook task for more info
     # first business day of the month
-    retrieval_date <- head( next_three, 1 )
+    retrieval_date <- head( first_three, 1 )
     if( !cmhc_audit ) retrieval_date <- tail( last_three, 1 )
   }
   return( retrieval_date )
