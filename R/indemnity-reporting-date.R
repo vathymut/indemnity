@@ -19,6 +19,7 @@ indemnity_reporting_date <- function( settlement_date ){
   # Get settlement date for RDI pricing 
   first_of_month <- settlement_date
   lubridate::day( first_of_month ) <- 1
+  lubridate::month( first_of_month ) <- lubridate::month( first_of_month ) + 1L
   eom <- first_of_month - lubridate::days( 1 )
   
   # Get 7 days before end of month and keep business days
@@ -26,7 +27,7 @@ indemnity_reporting_date <- function( settlement_date ){
   # Note: c( 2:6 ) corresponds to Monday through Friday
   is_weekday <- lubridate::wday( week_before_eom ) %in% c( 2:6 )
   business_days_before <- week_before_eom[ is_weekday ]
-
+  
   # Last business day of the month
   reporting_date <- head( business_days_before, 1 )
   return( reporting_date )
