@@ -12,7 +12,7 @@
 #' settlement_date <- lubridate::ymd( "2015-01-30" )
 #' ycurve_retrieval_date( issue_date, settlement_date )
 #'
-menu_retrieval_dates <- function( 
+menu_ycurve_retrieval_dates <- function( 
   settlement_date, 
   cmhc_audit = TRUE ){
   
