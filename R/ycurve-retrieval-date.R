@@ -19,6 +19,7 @@ ycurve_retrieval_date <- function(
   
   # Validate input
   stopifnot( lubridate::is.POSIXt( issue_date ),
+             inherits( menu_list, what = "list" ),
              all( c("old", "new") %in% names( menu_list ) ),
              all( sapply( menu_list, inherits, what = "POSIXt" ) ) )
   
