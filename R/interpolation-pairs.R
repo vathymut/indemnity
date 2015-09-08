@@ -61,8 +61,8 @@ interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_d
   stopifnot( length( setdiff(maturities_colnames, yields_colnames) ) == 0L )
   
   # Get tenors
-  tenor_short <- maturities_colnames[maturities_selected_index][ short_index ]
-  tenor_long <- maturities_colnames[maturities_selected_index][ long_index ]
+  tenor_short <- maturities_colnames[yields_selected_index][ short_index ]
+  tenor_long <- maturities_colnames[yields_selected_index][ long_index ]
 
   # Return list
   yields_list <- list( "short" = yield_short, "long" = yield_long )
