@@ -26,7 +26,7 @@ bey_from_wal <- function(
   # Get the WAL as a date
   wal_date <- wal_to_date( start_date = start_date, wal = wal )
   
-  # Get the yields for GoC short and long bond (bill)
+  # Get the yields for short-term and long-term bond (bill)
   results_list <- interpolation_pairs( 
     retrieval_date = start_date, 
     wal_date = wal_date,  
@@ -35,19 +35,19 @@ bey_from_wal <- function(
   yield_short <- results_list[['yields']][[1]]
   yield_long <- results_list[['yields']][[2]]
   
-  # Get the dates for GoC short and long maturity
+  # Get the dates for short-term and long-term maturity
   date_short <- results_list[['dates']][[1]]
   date_long <- results_list[['dates']][[2]]
   
-  # Get the bond equivalent yield for GoC short and long bond (bill)
+  # Get the tenors for the short-term and long-term bond (bill)
   tenor_short <- results_list[['tenors']][[1]]
   tenor_long <- results_list[['tenors']][[2]]
   
-  # Get the BEY for GoC short and long bond (bill)
+  # Get the BEY for the short and long bond (bill)
   bey_short <- yield_short
   bey_long <- yield_long
   
-  # Update bey if tenor is less than a year: STILL TO WRITE
+  # Update bey if tenor is less than a year
   if( should_convert_to_bey ){
     if( must_convert_to_bey( tenor = tenor_short ) ) 
       bey_short <- annual_to_bey( 
@@ -67,6 +67,6 @@ bey_from_wal <- function(
     bey_long = bey_long, 
     date_short = date_short, 
     date_long = date_long, 
-    wal_date = wal_date )
+    date_wal = wal_date )
   return( bey_interpolated )
 }
