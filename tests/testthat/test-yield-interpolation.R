@@ -62,9 +62,9 @@ test_that(
 
     expect_equal( bey_indemnity( bey_short = 1.363, 
                                  bey_long = 1.501, 
-                                 date_short = ymd( "2016-06-01" ), 
-                                 date_long = ymd( "2017-09-01" ) , 
-                                 date_wal = ymd( "2016-11-23" ) ),
+                                 short_date = ymd( "2016-06-01" ), 
+                                 long_date = ymd( "2017-09-01" ) , 
+                                 wal_date = ymd( "2016-11-23" ) ),
                   expected = 1.416,
                   tolerance = 1e-6 )
 

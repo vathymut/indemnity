@@ -24,13 +24,13 @@ test_that(
 test_that(
   "indemnity_reporting_date", {
     
-    expect_equal( indemnity_reporting_date( settlement_date = ymd( "2015-08-07" ) ),
+    expect_equal( indemnity_reporting_date( starting_date = ymd( "2015-08-07" ) ),
                   expected = ymd( "2015-07-31" ) )
     
-    expect_equal( indemnity_reporting_date( settlement_date = ymd( "2015-07-03" ) ),
+    expect_equal( indemnity_reporting_date( starting_date = ymd( "2015-07-03" ) ),
                   expected = ymd( "2015-06-30" ) )
     
-    expect_equal( indemnity_reporting_date( settlement_date = ymd( "2015-06-05" ) ),
+    expect_equal( indemnity_reporting_date( starting_date = ymd( "2015-06-05" ) ),
                   expected = ymd( "2015-05-29" ) )
 
   })
