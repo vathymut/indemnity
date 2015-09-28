@@ -40,15 +40,15 @@ test_that(
   "menu_retrieval_dates", {
 
     expect_equal( 
-      menu_retrieval_dates( settlement_date = lubridate::ymd( "2015-07-31" ), cmhc_audit = TRUE ),
+      list_of_ycurve_retrieval_dates( settlement_date = lubridate::ymd( "2015-07-31" ), cmhc_audit = TRUE ),
       expected = list( "old" = lubridate::ymd("2015-08-03"), "new" = lubridate::ymd("2015-07-29") ) )
     
     expect_equal( 
-      menu_retrieval_dates( settlement_date = lubridate::ymd( "2015-06-30" ), cmhc_audit = TRUE ),
+      list_of_ycurve_retrieval_dates( settlement_date = lubridate::ymd( "2015-06-30" ), cmhc_audit = TRUE ),
       expected = list( "old" = lubridate::ymd("2015-07-01"), "new" = lubridate::ymd("2015-06-26") ) )
     
     expect_equal( 
-      menu_retrieval_dates( settlement_date = lubridate::ymd( "2015-06-30" ), cmhc_audit = FALSE ),
+      list_of_ycurve_retrieval_dates( settlement_date = lubridate::ymd( "2015-06-30" ), cmhc_audit = FALSE ),
       expected = list( "old" = lubridate::ymd("2015-06-26"), "new" = lubridate::ymd("2015-06-26") ) )
 
   })
@@ -60,37 +60,37 @@ test_that(
     expect_equal( 
       ycurve_retrieval_date( 
         issue_date = ymd( "2013-02-01" ), 
-        menu_list = menu_retrieval_dates( ymd( "2013-01-31" ), cmhc_audit = TRUE ) ),
+        menu_list = list_of_ycurve_retrieval_dates( ymd( "2013-01-31" ), cmhc_audit = TRUE ) ),
       expected = ymd( "2013-02-01" ) )
     
     expect_equal( 
       ycurve_retrieval_date( 
         issue_date = ymd( "2015-02-01" ), 
-        menu_list = menu_retrieval_dates( ymd( "2015-01-31" ), cmhc_audit = TRUE ) ),
+        menu_list = list_of_ycurve_retrieval_dates( ymd( "2015-01-31" ), cmhc_audit = TRUE ) ),
       expected = ymd( "2015-01-28" ) )
     
     expect_equal( 
       ycurve_retrieval_date( 
         issue_date = ymd( "2015-02-01" ), 
-        menu_list = menu_retrieval_dates( ymd( "2015-02-28" ), cmhc_audit = TRUE ) ),
+        menu_list = list_of_ycurve_retrieval_dates( ymd( "2015-02-28" ), cmhc_audit = TRUE ) ),
       expected = ymd( "2015-02-25" ) )
     
     expect_equal( 
       ycurve_retrieval_date( 
         issue_date = ymd( "2013-02-01" ), 
-        menu_list = menu_retrieval_dates( ymd( "2015-02-28" ), cmhc_audit = TRUE ) ),
+        menu_list = list_of_ycurve_retrieval_dates( ymd( "2015-02-28" ), cmhc_audit = TRUE ) ),
       expected = ymd( "2015-03-02" ) )
 
     expect_equal( 
       ycurve_retrieval_date( 
         issue_date = ymd( "2012-12-01" ), 
-        menu_list = menu_retrieval_dates( ymd( "2012-12-30" ), cmhc_audit = FALSE ) ),
+        menu_list = list_of_ycurve_retrieval_dates( ymd( "2012-12-30" ), cmhc_audit = FALSE ) ),
       expected = ymd( "2012-12-27" ) )
 
     expect_equal( 
       ycurve_retrieval_date( 
         issue_date = ymd( "2012-12-01" ), 
-        menu_list = menu_retrieval_dates( ymd( "2012-12-30" ), cmhc_audit = FALSE ) ),
+        menu_list = list_of_ycurve_retrieval_dates( ymd( "2012-12-30" ), cmhc_audit = FALSE ) ),
       expected = ymd( "2012-12-27" ) )
 
   })
