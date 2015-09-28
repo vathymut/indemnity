@@ -16,7 +16,7 @@
 #'
 indemnity_reporting_date <- function( settlement_date ){
   
-  # Get  end of month (eom) date for prior month
+  # Get end of month (eom) date for prior month
   first_of_month <- settlement_date
   lubridate::day( first_of_month ) <- 1
   eom <- first_of_month - lubridate::days( 1 )

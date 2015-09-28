@@ -4,7 +4,7 @@
 #' \url{https://www.cmhc-schl.gc.ca/en/hoficlincl/mobase/upload/nha_mbs_indemnity_calculation_methodology.pdf}
 #'
 #' @param start_date Starting date.
-#' @param wal Weighted average life of NHA MBS pool.
+#' @param wal Weighted average life of NHAMBS pool.
 #'
 #' @return wal_date Weighted average life as a date.
 #'
