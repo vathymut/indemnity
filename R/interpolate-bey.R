@@ -53,7 +53,7 @@ interpolate_bey <- function(
   bey_short <- yield_short
   bey_long <- yield_long
   
-  # Update bey if tenor is less than a year: STILL TO WRITE
+  # Update bey if tenor is less than a year
   if( must_convert_to_bey( tenor_short ) ) bey_short <- annual_to_bey( 
     yield_short, settlement_date, maturity_date )
   if( must_convert_to_bey( tenor_long ) ) bey_long <- annual_to_bey( 
@@ -63,8 +63,8 @@ interpolate_bey <- function(
   bey_interpolated <- bey_indemnity( 
     bey_short = bey_short, 
     bey_long = bey_long, 
-    date_short = date_short, 
-    date_long = date_long, 
-    date_wal = wal_date )
+    short_date = date_short, 
+    long_date = date_long, 
+    wal_date = wal_date )
   return( bey_interpolated )
 }
