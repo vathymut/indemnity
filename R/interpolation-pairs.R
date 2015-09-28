@@ -42,16 +42,16 @@ interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_d
   }
 
   # Get indices of yields to interpolate
-  short_index <- findInterval( wal_date, maturities )
-  long_index <- short_index + 1L
+  index_short <- findInterval( wal_date, maturities )
+  index_long <- index_short + 1L
 
   # Get the yields for GoC short and long bond (bill)
-  yield_short <- yields[short_index]
-  yield_long <- yields[long_index]
+  yield_short <- yields[index_short]
+  yield_long <- yields[index_long]
 
   # Get the dates for GoC short and long maturity
-  date_short <- maturities[short_index]
-  date_long <- maturities[long_index]
+  date_short <- maturities[index_short]
+  date_long <- maturities[index_long]
 
   # Get column names
   maturities_colnames <- names( maturities_subset )
@@ -61,8 +61,8 @@ interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_d
   stopifnot( length( setdiff(maturities_colnames, yields_colnames) ) == 0L )
   
   # Get tenors
-  tenor_short <- maturities_colnames[yields_selected_index][ short_index ]
-  tenor_long <- maturities_colnames[yields_selected_index][ long_index ]
+  tenor_short <- maturities_colnames[yields_selected_index][ index_short ]
+  tenor_long <- maturities_colnames[yields_selected_index][ index_long ]
 
   # Return list
   yields_list <- list( "short" = yield_short, "long" = yield_long )
