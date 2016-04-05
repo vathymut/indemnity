@@ -18,7 +18,7 @@ annual_to_bey <- function( annual_rate, retrieval_date, maturity_date ){
   
   # Get number of days between settlement and maturity
   dates_interval <- lubridate::interval( retrieval_date, maturity_date )
-  t <- dates_interval / lubridate::edays( 1 )
+  t <- dates_interval / lubridate::ddays( 1 )
   
   # Group common terms
   factor_exp <- 182.5/t

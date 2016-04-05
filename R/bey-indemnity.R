@@ -27,11 +27,11 @@ bey_indemnity <- function( bey_short, bey_long, short_date, long_date, wal_date 
   diff_bey <- unname( bey_long - bey_short )
   
   # Difference in days between dates of wal and short(er) maturity
-  diff_num <- lubridate::interval( short_date, wal_date ) / lubridate::edays( 1 )
+  diff_num <- lubridate::interval( short_date, wal_date ) / lubridate::ddays( 1 )
   stopifnot( wal_date >= short_date ) # Sanity check
   
   # Difference in days between dates of long(er) and short(er) maturity
-  diff_denom <- lubridate::interval( short_date, long_date ) / lubridate::edays( 1 )
+  diff_denom <- lubridate::interval( short_date, long_date ) / lubridate::ddays( 1 )
   
   # Calculate the interpolated GoC yield
   factor <- diff_num/diff_denom

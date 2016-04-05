@@ -65,8 +65,8 @@ bey_from_wal <- function(
   bey_interpolated <- bey_indemnity( 
     bey_short = bey_short, 
     bey_long = bey_long, 
-    date_short = date_short, 
-    date_long = date_long, 
-    date_wal = wal_date )
+    short_date = date_short, 
+    long_date = date_long, 
+    wal_date = wal_date )
   return( bey_interpolated )
 }
