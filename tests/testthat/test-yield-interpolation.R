@@ -45,7 +45,7 @@ test_that(
     expect_equal( interpolation_pairs( retrieval_date = ymd( "2013-01-29" ), 
                                        wal_date = ymd( "2016-11-23" ),
                                        maturity_dt = bloomberg_cad_maturity,
-                                       yields_dt = bloomberg_goc )[['dates']],
+                                       yields_dt = bloomberg_goc )[['maturities']],
                   expected = list( "short" = ymd("2016-06-01"), "long" = ymd("2017-09-01") ) )
 
     expect_equal( interpolation_pairs( retrieval_date = ymd( "2013-01-29" ), 
@@ -62,8 +62,8 @@ test_that(
 
     expect_equal( bey_indemnity( bey_short = 1.363, 
                                  bey_long = 1.501, 
-                                 short_date = ymd( "2016-06-01" ), 
-                                 long_date = ymd( "2017-09-01" ) , 
+                                 maturity_short = ymd( "2016-06-01" ), 
+                                 maturity_long = ymd( "2017-09-01" ) , 
                                  wal_date = ymd( "2016-11-23" ) ),
                   expected = 1.416,
                   tolerance = 1e-6 )

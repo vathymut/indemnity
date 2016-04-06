@@ -5,19 +5,17 @@ context( "Date Interpolation" )
 test_that(
   "wal_to_date", {
     
-    expect_equal( wal_to_date( start_date = ymd( "2015-02-22" ), wal = 14 ),
+    expect_equal( wal_to_date( ymd( "2015-02-22" ), 14 ),
                   expected = ymd( "2029-02-22" ) )
     
-    expect_equal( wal_to_date( start_date = ymd( "2015-02-22" ), wal = 6.5 ),
+    expect_equal( wal_to_date( ymd( "2015-02-22" ), 6.5 ),
                   expected = ymd( "2021-08-23" ) )
     
-    expect_equal( wal_to_date( start_date = ymd( "2015-02-22" ), wal = 3.25 ),
+    expect_equal( wal_to_date( ymd( "2015-02-22" ), 3.25 ),
                   expected = ymd( "2018-05-24" ) )
 
-    expect_equal( wal_to_date( start_date = ymd( "2013-01-31" ), wal = 3.812 ),
+    expect_equal( wal_to_date( ymd( "2013-01-31" ), 3.812 ),
                   expected = ymd( "2016-11-23" ) )
-    
-    
   })
 
 #### Test wal_to_date ####
