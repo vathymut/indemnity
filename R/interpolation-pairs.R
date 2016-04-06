@@ -1,6 +1,6 @@
 #' Get interpolation pairs for the yields, maturity dates and tenors.
 #'
-#' @param retrieval_date Retrieval (anchor) date.
+#' @param retrieval_date Retrieval date of the yield curve.
 #' @param maturity_dt \code{Datatable} of maturity of each (CAD curve) tenor.
 #' @param yields_dt \code{Datatable} of yield of each (CAD curve) tenor.
 #' @param wal_date Weighted average life as a date.
@@ -18,51 +18,34 @@
 #'
 interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_dt ){
   
-  # Get maturities on reporting date
-  maturities_subset <- ycurve_for_interpolation( retrieval_date, ycurve_dt = maturity_dt )
-  maturities_with_nas <- sapply( maturities_subset, format, format = "%Y-%m-%d" )
-  maturities_selected_index <- unname( !is.na( maturities_with_nas ) )
-  maturities <- maturities_with_nas[ maturities_selected_index ]
-  maturities <- lubridate::ymd( maturities )
+  # Get maturities on date
+  maturities <- ycurve_maturities( retrieval_date=retrieval_date, ycurve_dt=maturity_dt )
 
-  # Get yields on reporting date
-  yields_subset <- ycurve_for_interpolation( retrieval_date, ycurve_dt = yields_dt )
-  yields_with_nas <- unlist( yields_subset, use.names = FALSE )
-  yields_selected_index <- unname( !is.na( yields_with_nas ) )
-  yields <- yields_with_nas[ yields_selected_index ]
+  # Get yields on date
+  yields <- ycurve_yields( retrieval_date=retrieval_date, ycurve_dt=ycurve_dt )
+
+  # Get tenors on date
+  tenors <- ycurve_tenors( retrieval_date=retrieval_date, ycurve_dt=maturity_dt )
   
-  #### Adjust indices to ensure non-NA matches for yields ####
-  is_OK <- identical( maturities_selected_index, yields_selected_index )
-  if( !is_OK ){
-    msg_template <- "On %s, there are missing yields and/or maturity dates."
-    msg_warning <- sprintf( msg_template, format( retrieval_date, "%Y-%m-%d" ) )
-    warning( msg_warning )
-    maturities <- maturities_with_nas[ yields_selected_index ]
-    maturities <- lubridate::ymd( maturities )
-  }
+  # Get index pair
+  indices_list <- pair_selected_index( wal_date, maturities )
+  index_short <- indices_list$short
+  index_long <- indices_list$long
 
-  # Get indices of yields to interpolate
-  index_short <- findInterval( wal_date, maturities )
-  index_long <- index_short + 1L
+  # Get yield pair
+  yield_list <- pair_selected_ycurve( index_short, index_long, yields )
+  yield_short <- yield_list$short
+  yield_long <- yield_list$long
 
-  # Get the yields for GoC short and long bond (bill)
-  yield_short <- yields[index_short]
-  yield_long <- yields[index_long]
-
-  # Get the dates for GoC short and long maturity
-  date_short <- maturities[index_short]
-  date_long <- maturities[index_long]
-
-  # Get column names
-  maturities_colnames <- names( maturities_subset )
-  yields_colnames <- names( yields_subset )
-  
-  # Sanity check
-  stopifnot( length( setdiff(maturities_colnames, yields_colnames) ) == 0L )
+  # Get maturity pair
+  maturity_list <- pair_selected_ycurve( index_short, index_long, maturities )
+  date_short <- maturity_list$short
+  date_long <- maturity_list$long
   
   # Get tenors
-  tenor_short <- maturities_colnames[yields_selected_index][ index_short ]
-  tenor_long <- maturities_colnames[yields_selected_index][ index_long ]
+  tenor_list <- pair_selected_ycurve( index_short, index_long, tenors )
+  tenor_short <- tenor_list$short
+  tenor_long <- tenor_list$long
 
   # Return list
   yields_list <- list( "short" = yield_short, "long" = yield_long )
