@@ -4,7 +4,7 @@
 #' @param ycurve_dt Datatable of historical yield curves.
 #' @param date_re Regex to uniquely match the column with dates in \code{yields_dt}.
 #'
-#' @return dt   Data.table of yield curve for indemnity calculation 
+#' @return dt \code{Data.table} of yield curve for indemnity calculation.
 #'
 #' @examples
 #' retrieval_date <- lubridate::ymd( "2013-03-01" )
@@ -16,17 +16,17 @@ ycurve_for_interpolation <- function( retrieval_date, ycurve_dt, date_re = "date
   # Get columns with yield rates
   re <- stringr::regex( date_re, ignore_case = TRUE )
   all_cols <- names( ycurve_dt )
-  yield_cols <- all_cols[ !stringr::str_detect( all_cols, pattern = re ) ]
+  value_cols <- all_cols[ !stringr::str_detect( all_cols, pattern = re ) ]
   date_col <- all_cols[ stringr::str_detect( all_cols, pattern = re ) ]
   
   # validate inputs
   stopifnot( lubridate::is.POSIXct( retrieval_date ),
              data.table::is.data.table( ycurve_dt ),
-             length( yield_cols ) > 0,
+             length( value_cols ) > 0,
              any( stringr::str_detect( all_cols, pattern = re ) ) )
   
   # Get data
   data.table::setkeyv( ycurve_dt, date_col )
   dt <- ycurve_dt[ J( retrieval_date ), roll = TRUE, rollends = FALSE ]
-  return( data.table::copy( dt[ , yield_cols, with = F ] ) )
+  return( data.table::copy( dt[ , value_cols, with = F ] ) )
 }

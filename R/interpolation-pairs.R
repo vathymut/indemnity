@@ -22,7 +22,7 @@ interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_d
   maturities <- ycurve_maturities( retrieval_date=retrieval_date, ycurve_dt=maturity_dt )
 
   # Get yields on date
-  yields <- ycurve_yields( retrieval_date=retrieval_date, ycurve_dt=ycurve_dt )
+  yields <- ycurve_yields( retrieval_date=retrieval_date, ycurve_dt=yields_dt )
 
   # Get tenors on date
   tenors <- ycurve_tenors( retrieval_date=retrieval_date, ycurve_dt=maturity_dt )
@@ -39,8 +39,8 @@ interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_d
 
   # Get maturity pair
   maturity_list <- pair_selected_ycurve( index_short, index_long, maturities )
-  date_short <- maturity_list$short
-  date_long <- maturity_list$long
+  maturity_short <- maturity_list$short
+  maturity_long <- maturity_list$long
   
   # Get tenors
   tenor_list <- pair_selected_ycurve( index_short, index_long, tenors )
@@ -49,7 +49,7 @@ interpolation_pairs <- function( retrieval_date, wal_date, maturity_dt, yields_d
 
   # Return list
   yields_list <- list( "short" = yield_short, "long" = yield_long )
-  dates_list <- list( "short" = date_short, "long" = date_long )
+  dates_list <- list( "short" = maturity_short, "long" = maturity_long )
   tenor_list <- list( "short" = tenor_short, "long" = tenor_long )
-  return( list( yields = yields_list, dates = dates_list, tenors = tenor_list ) )
+  return( list( yields = yields_list, maturities = dates_list, tenors = tenor_list ) )
 }
