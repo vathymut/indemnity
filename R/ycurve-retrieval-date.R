@@ -10,7 +10,7 @@
 #'
 #' @examples
 #' issue_date <- lubridate::ymd( "2015-01-30" )
-#' menu_list <- menu_retrieval_dates( ymd( "2015-01-31" ), cmhc_audit = TRUE )
+#' menu_list <- menu_ycurve( ymd( "2015-01-31" ), cmhc_audit = TRUE )
 #' ycurve_retrieval_date( issue_date, menu_list )
 #'
 ycurve_retrieval_date <- function( 

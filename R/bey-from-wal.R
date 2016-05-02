@@ -20,8 +20,7 @@ bey_from_wal <- function(
   wal,
   settlement_date, 
   maturity_dt, 
-  yields_dt,
-  should_convert_to_bey = TRUE ){
+  yields_dt ){
   
   # Get the WAL as a date
   wal_date <- wal_to_date( retrieval_date=settlement_date, wal=wal )
@@ -34,8 +33,8 @@ bey_from_wal <- function(
   bey_long <- pairs$yields$long
   
   # Update bey if tenor is less than a year
-  update_short <- should_convert_to_bey & is_tenor_short( pairs$tenors$short )
-  update_long <- should_convert_to_bey & is_tenor_short( pairs$tenors$long )
+  update_short <- is_tenor_short( pairs$tenors$short )
+  update_long <- is_tenor_short( pairs$tenors$long )
   if( update_short ) bey_short <- annual_to_bey( bey_short, settlement_date, maturity_date )
   if( update_long ) bey_long <- annual_to_bey( bey_long, settlement_date, maturity_date )
 

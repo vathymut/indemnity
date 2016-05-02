@@ -22,11 +22,12 @@ ycurve_for_interpolation <- function( retrieval_date, ycurve_dt, date_re = "date
   # validate inputs
   stopifnot( lubridate::is.POSIXct( retrieval_date ),
              data.table::is.data.table( ycurve_dt ),
-             length( value_cols ) > 0,
-             any( stringr::str_detect( all_cols, pattern = re ) ) )
+             length( value_cols ) > 1L,
+             length( date_col ) == 1L )
   
   # Get data
   data.table::setkeyv( ycurve_dt, date_col )
-  dt <- ycurve_dt[ J( retrieval_date ), roll = TRUE, rollends = FALSE ]
-  return( data.table::copy( dt[ , value_cols, with = F ] ) )
+  retrieval_dt <- ycurve_dt[ J( retrieval_date ), roll = TRUE, rollends = FALSE ]
+  dt <- retrieval_dt[ , value_cols, with = F ]
+  return( dt )
 }

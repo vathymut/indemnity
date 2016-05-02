@@ -10,9 +10,9 @@
 #' @examples
 #' issue_date <- lubridate::ymd( "2015-01-30" )
 #' settlement_date <- lubridate::ymd( "2015-01-30" )
-#' list_of_ycurve_retrieval_dates( issue_date, settlement_date )
+#' menu_ycurve( issue_date, settlement_date )
 #'
-list_of_ycurve_retrieval_dates <- function( 
+menu_ycurve <- function( 
   settlement_date, 
   cmhc_audit = TRUE ){
   
