@@ -14,11 +14,11 @@
 #' maturities_test_2 <- maturities
 #' maturities_test_1[5] <- NA
 #' maturities_test_2[5:6] <- NA
-#' pair_selected_index( wal_date, maturities )
-#' pair_selected_index( wal_date, maturities_test_1 )
-#' pair_selected_index( wal_date, maturities_test_2 )
+#' pair_indices( wal_date, maturities )
+#' pair_indices( wal_date, maturities_test_1 )
+#' pair_indices( wal_date, maturities_test_2 )
 #'
-pair_selected_index <- function( wal_date, maturities ){
+pair_indices <- function( wal_date, maturities ){
 
   # Validate inputs
   stopifnot( lubridate::is.POSIXct( wal_date ), lubridate::is.POSIXct( maturities )  )
@@ -34,7 +34,7 @@ pair_selected_index <- function( wal_date, maturities ){
 
   # Validate output
   nas <- is.na( c(index_short, index_long) )
-  stopifnot( any( nas ) == FALSE )
+  stopifnot( any( nas ) == FALSE, index_long <= length(maturities) )
 
   # Return list
   indices_list <- list( "short" = index_short, "long" = index_long )

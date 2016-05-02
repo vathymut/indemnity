@@ -1,4 +1,4 @@
-#' Get the yields for the short and long (pair) Government of Canada Bill or Bond.
+#' Get the yields/maturities for the short and long (pair) Government of Canada Bill or Bond.
 #'
 #' @param index_short Index of the short GoC Bond.
 #' @param index_long Index of the long GoC Bond.
@@ -10,9 +10,9 @@
 #' index_short <- 3L
 #' index_long <- 4L
 #' yields <- seq( from=0.5, to=3.0, by=0.5 )
-#' pair_selected_ycurve( index_short=index_short, index_long=index_long, yields=yields )
+#' pair_selected( index_short=index_short, index_long=index_long, yields=yields )
 #'
-pair_selected_ycurve <- function( index_short, index_long, yields ){
+pair_selected <- function( index_short, index_long, yields ){
   
   # Validate inputs
   stopifnot( length( yields ) >= index_long, index_short < index_long )
