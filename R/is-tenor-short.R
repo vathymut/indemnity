@@ -12,9 +12,9 @@
 #'
 is_tenor_short <- function( 
   tenor, 
-  tenors_to_convert = c( "OVERNIGHT", "MONTH3", "MONTH6", "MONTH12") ){
+  short_tenors = c( "OVERNIGHT", "MONTH3", "MONTH6", "MONTH12" ) ){
   
   # Validate inputs
-  stopifnot( is.character( tenor ), is.character( tenors_to_convert ) )
-  return( tolower(tenor) %in% tolower(tenors_to_convert) )
+  stopifnot( is.character( tenor ), is.character( short_tenors ) )
+  return( tolower(tenor) %in% tolower(short_tenors) )
 }
